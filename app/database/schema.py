@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-
 from sqlalchemy import (
     Column,
     Integer,
@@ -10,8 +9,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session
-
-from app.database.conn import Base, db
+from database.conn import Base, db
 
 
 class BaseMixin:

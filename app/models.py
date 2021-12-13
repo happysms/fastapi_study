@@ -32,3 +32,4 @@ class UserToken(BaseModel):
 
     class Config:
         orm_mode = True
+
