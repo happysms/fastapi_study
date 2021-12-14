@@ -1,15 +1,19 @@
 from dataclasses import asdict
 from typing import Optional
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
+from fastapi.security import APIKeyHeader
+
 from database.conn import db
 from common.config import conf
-from routes import index, auth
+from routes import index, auth, users
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.cors import CORSMiddleware
 from middlewares.token_validator import AccessControl
 from middlewares.trusted_hosts import TrustedHostMiddleware
 from common.consts import EXCEPT_PATH_LIST, EXCEPT_PATH_REGEX
+
+API_KEY_HEADER = APIKeyHeader(name="Authorization", auto_error=False)
 
 
 def create_app():
@@ -40,6 +44,7 @@ def create_app():
     # 라우터 정의
     app.include_router(index.router)
     app.include_router(auth.router, tags=["Authentication"], prefix="/auth")
+    app.include_router(users.router, tags=["Users"], prefix="/api", dependencies=[Depends(API_KEY_HEADER)])
     return app
 
 
