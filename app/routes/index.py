@@ -1,8 +1,8 @@
 from datetime import datetime
-
 from fastapi import APIRouter
 from starlette.requests import Request
 from starlette.responses import Response
+from inspect import currentframe as frame
 
 router = APIRouter()
 
@@ -16,6 +16,7 @@ async def index():
     current_time = datetime.utcnow()
     return Response(f"Notification API (UTC: {current_time.strftime('%Y.%m.%d %H:%M:%S')})")
 
+
 @router.get("/test")
 async def test(request: Request):
     """
@@ -23,5 +24,12 @@ async def test(request: Request):
     :return:
     """
     print("state.user", request.state.user)
+
+    try:
+        a = 1/0
+    except Exception as e:
+        request.state.inspect = frame()
+        raise e
+
     current_time = datetime.utcnow()
     return Response(f"Notificationn API (UTC: {current_time.strftime('%Y.%m.%d %H:%M:%S')}")

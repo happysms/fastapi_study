@@ -9,7 +9,7 @@ from common.config import conf
 from routes import index, auth, users
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.cors import CORSMiddleware
-from middlewares.token_validator import AccessControl
+from middlewares.token_validator import access_control
 from middlewares.trusted_hosts import TrustedHostMiddleware
 from common.consts import EXCEPT_PATH_LIST, EXCEPT_PATH_REGEX
 
@@ -31,7 +31,8 @@ def create_app():
     # 레디스 이니셜라이즈
 
     # 미들웨어 정의
-    app.add_middleware(AccessControl, except_path_list=EXCEPT_PATH_LIST, except_path_regex=EXCEPT_PATH_REGEX)
+    # app.add_middleware(AccessControl, except_path_list=EXCEPT_PATH_LIST, except_path_regex=EXCEPT_PATH_REGEX)
+    app.add_middleware(middleware_class=BaseHTTPMiddleware, dispatch=access_control)
     app.add_middleware(
         CORSMiddleware,
         allow_origins=conf().ALLOW_SITE,

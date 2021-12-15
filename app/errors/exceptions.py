@@ -28,6 +28,7 @@ class APIException(Exception):
         self.code = code
         self.msg = msg
         self.detail = detail
+        self.ex = ex
         super().__init__(ex)
 
 
@@ -38,7 +39,7 @@ class NotFoundUserEx(APIException):
             msg=f"해당 유저를 찾을 수 없습니다.",
             detail=f"Not Found User ID: {user_id}",
             code=f"{StatusCode.HTTP_400}{'1'.zfill(4)}",
-            ex=ex
+            ex=ex,
         )
 
 
